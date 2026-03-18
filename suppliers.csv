@@ -1,0 +1,4 @@
+supplier_name,price,delivery_days,rating
+SupplierA,150,5,4.2
+SupplierB,120,7,4.5
+SupplierC,180,3,3.8 
