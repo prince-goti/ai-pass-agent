@@ -12,10 +12,10 @@ def run_agent(task_input: str, csv_bytes: bytes = None, policy_text: str = "") -
     steps = []
     start = time.time()
 
-    # STEP 1 - INTAKE
+   
     steps.append({"step": "intake", "input": task_input})
 
-    # STEP 2 - PLAN
+
     try:
         plan_response = client.chat.completions.create(
             model="llama3-8b-8192",
@@ -32,10 +32,10 @@ def run_agent(task_input: str, csv_bytes: bytes = None, policy_text: str = "") -
 
     steps.append({"step": "plan", "plan": plan, "model": model_used})
 
-    # STEP 3 - EXECUTE TOOLS
+
     tool_outputs = {}
 
-    # Tool 1
+  
     if csv_bytes:
         data_result = run_data_tool(csv_bytes)
         tool_outputs["data_tool"] = data_result
@@ -44,7 +44,6 @@ def run_agent(task_input: str, csv_bytes: bytes = None, policy_text: str = "") -
         tool_outputs["data_tool"] = {"status": "skipped", "metrics": {}}
         steps.append({"step": "execute", "tool": "data_tool", "status": "skipped"})
 
-    # Tool 2
     if policy_text:
         load_policy(policy_text)
         context = retrieve_context(task_input)
@@ -54,15 +53,13 @@ def run_agent(task_input: str, csv_bytes: bytes = None, policy_text: str = "") -
         context = "No policy provided."
         steps.append({"step": "execute", "tool": "rag_tool", "status": "skipped"})
 
-    # Tool 3
     decision_result = run_decision_tool(tool_outputs["data_tool"], context)
     tool_outputs["decision_tool"] = decision_result
     steps.append({"step": "execute", "tool": "decision_tool", "decision": decision_result["decision"]})
 
-    # STEP 4 - EVALUATE
     steps.append({"step": "evaluate", "confidence": decision_result["confidence"]})
 
-    # STEP 5 - DELIVER
+
     execution_time = round(time.time() - start, 2)
     output = {
         "decision": decision_result["decision"],
