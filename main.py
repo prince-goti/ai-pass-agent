@@ -57,6 +57,7 @@ def get_logs():
         
         
 
+
 @app.get("/")
 def root():
     return {"message": "AI-Pass Agent System is running", "endpoints": ["/task/run", "/task/{id}", "/logs"]}
