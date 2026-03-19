@@ -13,7 +13,6 @@ def run_decision_tool(metrics: dict, context: str) -> dict:
             "confidence": 0.0
         }
 
-    # simple scoring: pick supplier with lowest price if column exists
     columns = metrics.get("metrics", {}).get("columns", [])
     price_col = next((c for c in columns if "price" in c.lower() or "cost" in c.lower()), None)
     name_col = next((c for c in columns if "name" in c.lower() or "supplier" in c.lower()), None)
