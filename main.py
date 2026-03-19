@@ -17,6 +17,7 @@ def write_log(entry: dict):
             try:
                 logs = json.load(f)
             except:
+                
                 logs = []
     logs.append(entry)
     with open(log_file, "w") as f:
